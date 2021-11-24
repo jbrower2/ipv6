@@ -125,3 +125,23 @@ test("toString([9729, 0, 0, 0, 0, 20497, 3326, 17860])", () => {
 test("toString([0, 0, 0, 0, 3, 0, 0, 0])", () => {
 	expect(toString([0, 0, 0, 0, 3, 0, 0, 0])).toBe("::3:0:0:0");
 });
+
+test("toString([0, 0, 0, 2, 3, 0, 0, 0])", () => {
+	expect(toString([0, 0, 0, 2, 3, 0, 0, 0])).toBe("::2:3:0:0:0");
+});
+
+test("toString([0, 0, 0, 2, 0, 0, 0, 0])", () => {
+	expect(toString([0, 0, 0, 2, 0, 0, 0, 0])).toBe("0:0:0:2::");
+});
+
+test("toString([])", () => {
+	expect(() => toString([])).toThrow(
+		/^IPv6 address should have eight parts segments:/
+	);
+});
+
+test("toString([1, 2, 3, 4, 5, 6, 7, 8, 9])", () => {
+	expect(() => toString([1, 2, 3, 4, 5, 6, 7, 8, 9])).toThrow(
+		/^IPv6 address should have eight parts segments:/
+	);
+});

@@ -63,6 +63,41 @@ export function toSegments(address: string): number[] {
  * @returns The minimal form of the address.
  */
 export function toString(segments: number[]): string {
-	console.log(segments);
-	return "";
+	if (segments.length !== 8) {
+		throw new Error(
+			`IPv6 address should have eight parts segments: ${segments.join(", ")}`
+		);
+	}
+
+	// find the longest string of zeros
+	let zeroStart = 0;
+	let zeroLength = 0;
+	for (let start = 0; start < 8; start++) {
+		// calculate the length of zeros starting at `start`
+		let length = 0;
+		for (let i = start; i < 8; i++) {
+			if (segments[i] !== 0) {
+				break;
+			}
+			length++;
+		}
+
+		// using > here (rather than >=) means we'll always take the first group, in the event of ties
+		if (length > zeroLength) {
+			zeroStart = start;
+			zeroLength = length;
+		}
+	}
+
+	// convert all segments to hex strings
+	const strings = segments.map((segment) => segment.toString(16));
+
+	// only collapse zeros if we have two or more in a row
+	if (zeroLength < 2) {
+		return strings.join(":");
+	}
+
+	const start = strings.slice(0, zeroStart).join(":");
+	const end = strings.slice(zeroStart + zeroLength).join(":");
+	return `${start}::${end}`;
 }
