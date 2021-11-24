@@ -28,8 +28,11 @@ export function toSegments(address: string): number[] {
 	} else {
 		// '::' found, so we need to expand zeros
 
-		const start = !sections[0] ? [] : sections[0].split(":");
-		const end = !sections[1] ? [] : sections[1].split(":");
+		const [start, end] = sections.map((section) =>
+			// coerce empty strings to empty arrays
+			// otherwise the `split` method would return [""] when the address starts/ends with a zero expansion
+			!section ? [] : section.split(":")
+		);
 
 		// 6 because zero expansion must account for at least two slots
 		if (start.length + end.length > 6) {
