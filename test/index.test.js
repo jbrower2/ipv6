@@ -92,7 +92,19 @@ test('toSegments("1:2:3::4:5:6:7")', () => {
 
 test('toSegments("1:23:456::abcde")', () => {
 	expect(() => toSegments("1:23:456::abcde")).toThrow(
-		/^IPv6 segments must be 1-4 hexadecimal digits:/
+		"IPv6 segments must be 1-4 hexadecimal digits: abcde"
+	);
+});
+
+test('toSegments(":1:2:3::")', () => {
+	expect(() => toSegments(":1:2:3::")).toThrow(
+		"IPv6 segments must be 1-4 hexadecimal digits: "
+	);
+});
+
+test('toSegments("::1:2:3:")', () => {
+	expect(() => toSegments("::1:2:3:")).toThrow(
+		"IPv6 segments must be 1-4 hexadecimal digits: "
 	);
 });
 

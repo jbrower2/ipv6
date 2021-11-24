@@ -43,7 +43,8 @@ export function toSegments(address: string): number[] {
 	}
 
 	return strings.map((s) => {
-		if (!s) {
+		// undefined was used as a placeholder for expanded zeros
+		if (s === undefined) {
 			return 0;
 		}
 
